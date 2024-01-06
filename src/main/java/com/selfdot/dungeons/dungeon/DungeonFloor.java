@@ -20,6 +20,7 @@ public class DungeonFloor {
     private static final Random RANDOM = new Random();
     private static final int MAX_PLACE_ATTEMPTS = 100;
     private static final double GRAPH_DROPOUT = 0.75d;
+    private static final double NEW_HALLWAY_PENALTY = 0.75d;
 
     private final Vector2i size = new Vector2i();
     private final List<PlacedDungeonRoom> rooms = new ArrayList<>();
@@ -104,9 +105,9 @@ public class DungeonFloor {
 
             if (startPassages.stream().map(DungeonPassage::complement).anyMatch(endPassages::contains)) continue;
 
-            PriorityQueue<Stack<Vector2i>> pathFind = new PriorityQueue<>(
-                Comparator.comparingInt(state -> (int)state.stream().filter(point -> !hallways.contains(point)).count())
-            );
+            PriorityQueue<Stack<Vector2i>> pathFind = new PriorityQueue<>(Comparator.comparingDouble(
+                state -> state.size() - (NEW_HALLWAY_PENALTY * state.stream().filter(hallways::contains).count())
+            ));
             startPassages.forEach(passage -> {
                 Stack<Vector2i> path = new Stack<>();
                 DungeonPassage complement = DungeonPassage.complement(passage);

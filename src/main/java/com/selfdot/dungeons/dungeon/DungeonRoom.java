@@ -42,7 +42,7 @@ public class DungeonRoom {
 
     public void randomizePassages() {
         List<DungeonPassage> passageList = new ArrayList<>(passages);
-        int maxPassages = RANDOM.nextInt(1, 3);
+        int maxPassages = RANDOM.nextInt(1, 5);
         while (passageList.size() > maxPassages) {
             passageList.remove(RANDOM.nextInt(passageList.size()));
         }
