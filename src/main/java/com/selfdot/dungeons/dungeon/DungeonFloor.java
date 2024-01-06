@@ -19,7 +19,7 @@ public class DungeonFloor {
 
     private static final Random RANDOM = new Random();
     private static final int MAX_PLACE_ATTEMPTS = 100;
-    private static final double GRAPH_DROPOUT = 1 / 4d;
+    private static final double GRAPH_DROPOUT = 0.75d;
 
     private final Vector2i size = new Vector2i();
     private final List<PlacedDungeonRoom> rooms = new ArrayList<>();
@@ -84,7 +84,7 @@ public class DungeonFloor {
             else path.pop();
         }
 
-        triangulation.forEach(edge -> { if (RANDOM.nextDouble() < GRAPH_DROPOUT) minimumSpanningTree.add(edge); });
+        triangulation.forEach(edge -> { if (RANDOM.nextDouble() > GRAPH_DROPOUT) minimumSpanningTree.add(edge); });
         return minimumSpanningTree;
     }
 
@@ -154,12 +154,12 @@ public class DungeonFloor {
                 room.position().x() + passage.x(), room.position().y() + passage.y(), passage.side()
             )))
             .collect(Collectors.toSet());
-        rooms.forEach(room -> room.room().placeInWorld(
+        rooms.forEach(room -> DungeonGenerator.getInstance().addTask(() -> room.room().placeInWorld(
             world,
             corner.add(room.position().x * TILE_SIZE, 0, room.position().y * TILE_SIZE),
             passages,
             room.position()
-        ));
+        )));
     }
 
     private static boolean rectanglesOverlap(Vector2i pos1, Vector2i size1, Vector2i pos2, Vector2i size2) {
