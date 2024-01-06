@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "dungeons",
+  "version": "${version}",
+  "name": "Dungeons",
+  "description": "",
+  "authors": [],
+  "contact": {
+    "repo": "https://github.com/theep/Dungeons"
+  },
+  "license": "GPL-3.0",
+  "icon": "assets/dungeons/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.selfdot.dungeons.DungeonsMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
